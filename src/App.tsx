@@ -43,7 +43,7 @@ function App() {
     }
   };
 
-  const handleDragEnd = (result) => {
+  const handleDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
 
     const sourceList = lists.filter((list) => list.listId === source.draggableId)[0];

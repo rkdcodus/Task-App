@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { FiX } from "react-icons/fi";
 import { useTypedDispatch, useTypedSelector } from "../../hooks/redux";
 import { deleteTask, setModalActive, updateTask } from "../../store/slices/boardsSlice";
@@ -15,7 +15,6 @@ import {
   updateButton,
   wrapper,
 } from "./EditModal.css";
-import { button } from "../ActionButton/DropDownForm/DropDownForm.css";
 
 const EditModal = () => {
   const dispatch = useTypedDispatch();

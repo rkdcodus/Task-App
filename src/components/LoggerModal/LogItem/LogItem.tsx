@@ -3,11 +3,11 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { author, date, logItemWrap, message } from "./LogItem.css";
 
 type TLogItemProps = {
-  logItem: ILogItem;
+  LogItem: ILogItem;
 };
 
-const LogItem = ({ logItem }: TLogItemProps) => {
-  const timeOffset = new Date(Date.now() - Number(logItem.logTimestamp));
+const LogItem = ({ LogItem }: TLogItemProps) => {
+  const timeOffset = new Date(Date.now() - Number(LogItem.logTimestamp));
 
   const showOffsetTime = `
   ${timeOffset.getMinutes() > 0 ? `${timeOffset.getMinutes()}m` : ""}
@@ -19,9 +19,9 @@ const LogItem = ({ logItem }: TLogItemProps) => {
     <div className={logItemWrap}>
       <div className={author}>
         <BsFillPersonFill />
-        {logItem.logAuthor}
+        {LogItem.logAuthor}
       </div>
-      <div className={message}>{logItem.logMessage}</div>
+      <div className={message}>{LogItem.logMessage}</div>
       <div className={date}>{showOffsetTime}</div>
     </div>
   );
