@@ -15,6 +15,7 @@ import { GoSignOut } from "react-icons/go";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../../firebase";
 import { setUser } from "../../store/slices/userSlice";
+import { useAuth } from "../../hooks/useAuth";
 
 type TBoardListProps = {
   activeBoardId: string;
@@ -24,6 +25,7 @@ type TBoardListProps = {
 const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
   const dispatch = useTypedDispatch();
   const { boardArray } = useTypedSelector((state) => state.boards);
+  const { isAuth } = useAuth();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const auth = getAuth(app);
@@ -69,8 +71,11 @@ const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
         ) : (
           <FiPlusCircle onClick={() => setIsFormOpen((prev) => !prev)} className={addButton} />
         )}
-        <GoSignOut className={addButton} />
-        <FiLogIn className={addButton} onClick={handleLogin} />
+        {isAuth ? (
+          <GoSignOut className={addButton} />
+        ) : (
+          <FiLogIn className={addButton} onClick={handleLogin} />
+        )}
       </div>
     </div>
   );
