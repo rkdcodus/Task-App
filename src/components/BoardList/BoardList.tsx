@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useTypedSelector } from "../../hooks/redux";
+import { useTypedDispatch, useTypedSelector } from "../../hooks/redux";
 import SideForm from "./SideForm/SideForm";
-import { FiPlusCircle } from "react-icons/fi";
+import { FiLogIn, FiPlusCircle } from "react-icons/fi";
 import {
   addButton,
   addSection,
@@ -11,6 +11,10 @@ import {
   title,
 } from "./BoardList.css";
 import clsx from "clsx";
+import { GoSignOut } from "react-icons/go";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { app } from "../../firebase";
+import { setUser } from "../../store/slices/userSlice";
 
 type TBoardListProps = {
   activeBoardId: string;
@@ -18,8 +22,28 @@ type TBoardListProps = {
 };
 
 const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
+  const dispatch = useTypedDispatch();
   const { boardArray } = useTypedSelector((state) => state.boards);
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  const handleLogin = () => {
+    signInWithPopup(auth, provider)
+      .then((userCredential) => {
+        console.log(userCredential);
+        dispatch(
+          setUser({
+            email: userCredential.user.email,
+            id: userCredential.user.uid,
+          })
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <div className={container}>
@@ -45,6 +69,8 @@ const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
         ) : (
           <FiPlusCircle onClick={() => setIsFormOpen((prev) => !prev)} className={addButton} />
         )}
+        <GoSignOut className={addButton} />
+        <FiLogIn className={addButton} onClick={handleLogin} />
       </div>
     </div>
   );
