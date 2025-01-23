@@ -12,9 +12,9 @@ import {
 } from "./BoardList.css";
 import clsx from "clsx";
 import { GoSignOut } from "react-icons/go";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { app } from "../../firebase";
-import { setUser } from "../../store/slices/userSlice";
+import { removeUser, setUser } from "../../store/slices/userSlice";
 import { useAuth } from "../../hooks/useAuth";
 
 type TBoardListProps = {
@@ -47,6 +47,16 @@ const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
       });
   };
 
+  const handleSingOut = () => {
+    signOut(auth)
+      .then(() => {
+        dispatch(removeUser());
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <div className={container}>
       <div className={title}>게시판: </div>
@@ -72,7 +82,7 @@ const BoardList = ({ activeBoardId, setActiveBoardId }: TBoardListProps) => {
           <FiPlusCircle onClick={() => setIsFormOpen((prev) => !prev)} className={addButton} />
         )}
         {isAuth ? (
-          <GoSignOut className={addButton} />
+          <GoSignOut className={addButton} onClick={handleSingOut} />
         ) : (
           <FiLogIn className={addButton} onClick={handleLogin} />
         )}
