@@ -43,7 +43,33 @@ function App() {
     }
   };
 
-  const handleDragEnd = (result) => {};
+  const handleDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    const sourceList = lists.filter((list) => list.listId === source.draggableId)[0];
+
+    dispatch(
+      sort({
+        boardIndex: boards.findIndex((board) => board.boardId === activeBoardId),
+        droppableIdStart: source.droppableId,
+        droppableIdEnd: destination.droppableId,
+        droppableIndexStart: source.index,
+        droppableIndexEnd: destination.index,
+        draggableId,
+      })
+    );
+
+    dispatch(
+      addLog({
+        logId: v4(),
+        logMessage: `리스트 "${sourceList.listName}"에서 리스트 "${
+          lists.filter((list) => list.listId === destination.draggableId)[0].listName
+        }으로 ${sourceList.tasks.filter((task) => task.taskId === draggableId)[0].taskName}을 옮김`,
+        logAuthor: "User",
+        logTimestamp: String(Date.now()),
+      })
+    );
+  };
 
   return (
     <div className={appContainer}>
