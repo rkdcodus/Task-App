@@ -5,7 +5,7 @@ import { listButton, taskButton } from "./ActionButton.css";
 
 type TActionButtonProps = {
   boardId: string;
-  lsitId: string;
+  listId: string;
   list?: boolean;
 };
 
